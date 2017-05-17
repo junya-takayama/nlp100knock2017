@@ -1,0 +1,1 @@
+print("\n".join(sorted(set(line.split()[0] for line in open("./data/hightemp.txt")))))
