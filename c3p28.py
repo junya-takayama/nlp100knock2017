@@ -20,4 +20,5 @@ jawiki = Jawiki()
 jawiki.getArticle("イギリス")
 dic = jawiki.getBasicInfo(preProcess)
 
-pprint(dic)
+if __name__ == "__main__":
+    pprint(dic)

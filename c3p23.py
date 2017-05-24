@@ -3,6 +3,7 @@ from nlp100utils import Jawiki
 
 jawiki = Jawiki()
 jawiki.getArticle("イギリス")
+
 reg = re.compile("=(=+)\s*(.*?)\s*(=+)")
 
 for match in jawiki.rMatch(reg):

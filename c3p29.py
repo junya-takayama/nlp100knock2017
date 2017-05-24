@@ -29,7 +29,7 @@ params = {"action" : "query",
           "iiprop" : "url"}
 
 data = requests.get(api, params=params).json()
-pprint(data)
+#pprint(data)
 
 def searchImageURL(data):
     target = data["query"]["pages"]
