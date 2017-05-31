@@ -18,7 +18,7 @@ def preProcess(text):
     return text
 
 jawiki = Jawiki()
-jawiki.getArticle("アメリカ合衆国")
+jawiki.getArticle("イギリス")
 dic = jawiki.getBasicInfo(preProcess)
 
 api = "https://en.wikipedia.org/w/api.php"
@@ -29,7 +29,7 @@ params = {"action" : "query",
           "iiprop" : "url"}
 
 data = requests.get(api, params=params).json()
-#pprint(data)
+pprint(data)
 
 def searchImageURL(data):
     target = data["query"]["pages"]
