@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <title>けんさく</title>
+        <link rel="stylesheet" type="text/css" href="./static/common.css">
+
+    </head>
+    <body>
+        <div class='header'>
+            <form action="{{ url_for('search') }}" class="search">
+                <input type="text" name="keyword", value="{{ keyword }}" class="text query" placeholder="Search keyword">
+                <input type="text" name="tags", value="{{ tags }}" class="text tag" placeholder="Tags">
+                <input type="submit" value="Search" class="text submit">
+                <br>
+                <input type="radio" name="mode" value="ngram" checked="True"> character bigram
+                <input type="radio" name="mode" value="like"> partial match (OR)
+                <input type="radio" name="mode" value=""> exact match
+
+            </form>
+        </div>
+        <div class="main">
+                {{ results|safe }}
+        </div>
+    </body>
+</html>

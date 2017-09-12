@@ -7,7 +7,7 @@ matplotlib.rcParams["font.family"] =  'AppleGothic' #日本語ラベル対策
 
 n = 10
 
-_,freqList = zip(*Counter(word["surface"] for sent in ml.sentences for word in sent).items())
+_,freqList = zip(*Counter(word["base"] for sent in ml.sentences for word in sent).items())
 x_freq,y_sum = zip(*sorted(Counter(freqList).items(),key=lambda x:x[0])[:n])
 
 plt.bar(x_freq,y_sum)

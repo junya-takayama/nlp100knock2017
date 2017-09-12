@@ -49,8 +49,62 @@ class Jawiki:
         for match in self.rMatch(reg):
             dic[match[0]] = preProcess(match[1])
         return dic
+    
+class CabochaDoc:
+    import CaboCha
+    def __init__(self,fp='./data/neko.txt.cabocha'):
+        #めんどくさいので40と41を一気に
+        chunkInfo = re.compile("([0-9]+?)\s([0-9\-]+?)D\s(.+?)\s(.+?)")
+        cSentences = []
+        mSentences = []
+        for sent in open(fp).read().split('EOS\n'):
+            chunkList = []
+            morphList = []
+            for chunk in sent.strip('* ').split('* '):
+                if chunkInfo.match(chunk):
+                    _,dst,_,_ = chunkInfo.findall(chunk)[0]
+                    dst=int(dst)
+                    chunk = chunk.strip()
+                    morphs = [self.morphParse(line) for line in chunk.split('\n')[1:]]
+                    morphList.extend(morphs)
+                    chunkList.append(Chunk(morphs,dst))
+                else:
+                    pass
+            for i,chunk in enumerate(chunkList):
+                chunkList[chunk.dst].srcs.append(i)
+                chunkList[i].next = chunkList[chunk.dst]
+            cSentences.append(chunkList)
+            mSentences.append(morphList)
+        self.cSentences = cSentences
+        self.mSentences = mSentences
+        
+    def __call__(self,sid):
+        print("-----sentence info------")
+        print("sentence ID :",sid)
+        print("surface :"," ".join(morph.surface for morph in self.mSentences[sid]))
+        print("chunks :","/".join(chunk.surface() for chunk in self.cSentences[sid]))
+         
+        
+        
+    def morphParse(self,text):
+        tmp = text.strip().split('\t')
+        if len(tmp)==1:
+            surface = ' '
+            pos,pos1,_,_,_,_,base = text.strip().split(',')[:7]
+        else:
+            surface = tmp[0]
+            pos,pos1,_,_,_,_,base = tmp[1].strip().split(',')[:7]
+        return Morph(surface,pos,pos1,base)    
+                
+class Chunk:
+    def __init__(self,morphs,dst):
+        self.morphs = morphs
+        self.dst = dst
+        self.srcs = []
+    def surface(self):
+        return " ".join(morph.surface for morph in self.morphs)
 
-class Morph(object):
+class Morph:
     def __init__(self,surface,pos,pos1,base):
         self.surface = surface
         self.pos = pos
@@ -104,7 +158,7 @@ class MecabLoader:
                 morphDict[line] = tmp_m
                 tmp.append(tmp_m)
         self.morphs = list(morphDict.values())
-        return
+        return 
     
     def __call__(self):
         return self.sentences

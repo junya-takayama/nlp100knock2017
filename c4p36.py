@@ -6,7 +6,7 @@ ml = MecabLoader()
 pprint(
     sorted(
         Counter(
-            word["surface"] for sent in ml.sentences for word in sent
+            word["base"] for sent in ml.sentences for word in sent
         ).items(),
         key=lambda x:-x[1]
     )[:10]
