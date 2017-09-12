@@ -92,7 +92,7 @@ class MongoSearch:
                     [{"aliases.name":{"$regex": elem}} for elem in keyword]
                 })
             
-        else: #全文一致検索
+        else: #完全一致検索
             tags = tags.split()
             if len(tags) > 0:
                 result = self.collection.find({"$and":[
@@ -103,8 +103,7 @@ class MongoSearch:
                 result = self.collection.find({"$or":[{"name":keyword},{"aliases.name":keyword}]})
         
         if descending:
-            result = [data for data in result if "rating" in data.keys()]
-            result = sorted(result,key=lambda x:-x["rating"]["value"])
+            result.sort("rating",pymongo.DESCENDING)
             
         return list(result)[:50]
         

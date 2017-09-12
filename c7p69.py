@@ -68,7 +68,7 @@ def search():
     tags = request.args.get('tags')
     mode = request.args.get('mode')
     n = 2
-    descending = False
+    descending = not(mode == "ngram")
     search = MongoSearch()
     results = search.search(keyword,tags,mode,n,descending)
     search.close()
